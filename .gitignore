@@ -4,3 +4,4 @@ llama-cpp-python/lib64
 llama-cpp-python/include/
 llama-cpp-python/share/
 llama-cpp-python/pyvenv.cfg
+node_modules/
