@@ -1,0 +1,266 @@
+:root {
+  color: #172033;
+  background: #f4f7fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.App {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(0, 164, 89, 0.12), transparent 32rem),
+    linear-gradient(180deg, #f8fbff 0%, #eef3f8 100%);
+}
+
+.wizard-shell {
+  width: min(1040px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.hero-card,
+.camera-card,
+.status-card,
+.form-card,
+.stepper,
+.error-banner {
+  border: 1px solid rgba(26, 44, 74, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(23, 32, 51, 0.08);
+}
+
+.hero-card {
+  padding: 36px;
+  background: #ffffff;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: #008e54;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1;
+}
+
+.hero-card p:last-child,
+.status-card p,
+.muted-text {
+  color: #647084;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 18px 0;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.stepper span {
+  border-radius: 999px;
+  padding: 12px;
+  color: #647084;
+  font-weight: 700;
+  text-align: center;
+}
+
+.stepper .active {
+  background: #008e54;
+  color: #ffffff;
+}
+
+.camera-card,
+.status-card,
+.form-card {
+  padding: 24px;
+  background: #ffffff;
+}
+
+.video-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #0e1625;
+}
+
+.video-frame video {
+  display: block;
+  width: 100%;
+  max-height: 62vh;
+  object-fit: cover;
+}
+
+.quality-badge {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.quality-badge.good {
+  background: #008e54;
+}
+
+.quality-badge.warn {
+  background: #c2410c;
+}
+
+.hidden-canvas {
+  display: none;
+}
+
+.quality-panel {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(220px, 2fr);
+  gap: 16px;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.quality-panel label {
+  display: grid;
+  gap: 8px;
+  font-weight: 700;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid #d6deea;
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: #172033;
+  font: inherit;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #008e54;
+  outline: 3px solid rgba(0, 142, 84, 0.15);
+}
+
+.primary-button,
+.secondary-button {
+  border: 0;
+  border-radius: 14px;
+  padding: 13px 18px;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: #008e54;
+  color: #ffffff;
+}
+
+.primary-button:disabled {
+  background: #a6b0bf;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  background: #e8eef5;
+  color: #172033;
+}
+
+.error-text,
+.error-banner {
+  color: #b42318;
+}
+
+.error-banner {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  background: #fff2f0;
+}
+
+.status-card {
+  display: grid;
+  justify-items: center;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.loader {
+  width: 46px;
+  height: 46px;
+  margin-bottom: 18px;
+  border: 5px solid #dce6f0;
+  border-top-color: #008e54;
+  border-radius: 999px;
+  animation: spin 0.9s linear infinite;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.form-grid label {
+  display: grid;
+  gap: 8px;
+  font-weight: 800;
+}
+
+.wide-field {
+  grid-column: 1 / -1;
+}
+
+.button-row {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 22px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 720px) {
+  .wizard-shell {
+    width: min(100% - 20px, 1040px);
+    padding: 20px 0;
+  }
+
+  .hero-card,
+  .camera-card,
+  .status-card,
+  .form-card {
+    padding: 18px;
+  }
+
+  .stepper,
+  .quality-panel,
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .button-row {
+    flex-direction: column;
+  }
+}
