@@ -31,7 +31,7 @@ async def extract(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="Uploaded image is empty")
 
     try:
-        return extract_kyc_data(image_bytes, content_type)
+        return extract_kyc_data(image_bytes)
     except HTTPException:
         raise
     except Exception as exc:

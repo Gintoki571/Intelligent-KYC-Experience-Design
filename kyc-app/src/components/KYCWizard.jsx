@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import CameraView from './CameraView';
+import PhotoUpload from './PhotoUpload';
 
 const emptyKycData = {
   name: '',
@@ -14,12 +15,12 @@ function KYCWizard() {
   const [kycData, setKycData] = useState(emptyKycData);
   const [error, setError] = useState('');
 
-  const handleCapture = async (blob) => {
+  const handleDocumentImage = async (fileOrBlob, filename = 'document.jpg') => {
     setError('');
     setStep('analyzing');
 
     const formData = new FormData();
-    formData.append('file', blob, 'document.jpg');
+    formData.append('file', fileOrBlob, filename);
 
     try {
       const response = await fetch('http://localhost:8000/extract', {
@@ -64,7 +65,12 @@ function KYCWizard() {
 
       {error && <div className="error-banner">{error}</div>}
 
-      {step === 'capture' && <CameraView onCapture={handleCapture} />}
+      {step === 'capture' && (
+        <div className="capture-options">
+          <CameraView onCapture={handleDocumentImage} />
+          <PhotoUpload onUpload={handleDocumentImage} />
+        </div>
+      )}
 
       {step === 'analyzing' && (
         <section className="status-card" aria-live="polite">

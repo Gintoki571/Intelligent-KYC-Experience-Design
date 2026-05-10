@@ -4,18 +4,13 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+from PIL import Image
+
 from schemas import KYCData
 
 DEFAULT_MODEL_PATH = "/home/bindesh/kyc/llama-cpp-python/Qwen-3.5-0.8B-OCR.Q8_0.gguf"
 DEFAULT_MMPROJ_PATH = "/home/bindesh/kyc/llama-cpp-python/Qwen-3.5-0.8B-OCR.mmproj-f16.gguf"
 DEFAULT_MTMD_CLI_PATH = "/home/bindesh/Desktop/llama.cpp/build/bin/llama-mtmd-cli"
-
-CONTENT_TYPE_SUFFIXES = {
-    "image/jpeg": ".jpg",
-    "image/jpg": ".jpg",
-    "image/png": ".png",
-    "image/webp": ".webp",
-}
 
 EXTRACTION_PROMPT = (
     "Extract fields from this Nepalese identity document. "
@@ -38,9 +33,23 @@ def _existing_path(env_name: str, default_path: str, label: str) -> str:
     return path
 
 
-def _image_suffix(content_type: str) -> str:
-    media_type = content_type.split(";", 1)[0].lower()
-    return CONTENT_TYPE_SUFFIXES.get(media_type, ".img")
+def _write_png_image(image_bytes: bytes) -> str:
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as image_file:
+            temp_path = image_file.name
+
+        with tempfile.SpooledTemporaryFile() as source_file:
+            source_file.write(image_bytes)
+            source_file.seek(0)
+            with Image.open(source_file) as image:
+                image.convert("RGB").save(temp_path, format="PNG")
+    except Exception:
+        if temp_path:
+            Path(temp_path).unlink(missing_ok=True)
+        raise
+
+    return temp_path
 
 
 def _kyc_json_schema() -> str:
@@ -94,13 +103,10 @@ def _run_mtmd_cli(image_path: str) -> str:
     return result.stdout.strip()
 
 
-def extract_kyc_data(image_bytes: bytes, content_type: str) -> KYCData:
+def extract_kyc_data(image_bytes: bytes) -> KYCData:
     temp_path = None
     try:
-        with tempfile.NamedTemporaryFile(delete=False, suffix=_image_suffix(content_type)) as image_file:
-            image_file.write(image_bytes)
-            temp_path = image_file.name
-
+        temp_path = _write_png_image(image_bytes)
         output = _run_mtmd_cli(temp_path)
         return KYCData.model_validate_json(_extract_json(output))
     finally:
