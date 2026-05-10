@@ -5,3 +5,5 @@ llama-cpp-python/include/
 llama-cpp-python/share/
 llama-cpp-python/pyvenv.cfg
 node_modules/
+.warp/
+backend/__pycache__/
